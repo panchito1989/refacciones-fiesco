@@ -7,7 +7,6 @@ import { createClient } from "@/lib/supabase/server";
 import { slugify } from "@/lib/slug";
 
 export async function crearProducto(formData: FormData) {
-  // Seguridad: solo usuarios autenticados
   const supabase = await createClient();
   const {
     data: { user },
@@ -21,9 +20,13 @@ export async function crearProducto(formData: FormData) {
   const priceMxn = Number(formData.get("priceMxn") ?? 0);
   const stock = Number(formData.get("stock") ?? 0);
   const condition =
-    String(formData.get("condition") ?? "NUEVO") === "RECUPERADO"
-      ? "RECUPERADO"
-      : "NUEVO";
+    String(formData.get("condition") ?? "NUEVO") === "RECUPERADO" ? "RECUPERADO" : "NUEVO";
+  const categoryIdRaw = String(formData.get("categoryId") ?? "").trim();
+  const categoryId = categoryIdRaw.length > 0 ? categoryIdRaw : null;
+  const equivalences = String(formData.get("equivalences") ?? "")
+    .split(",")
+    .map((s) => s.trim().toUpperCase())
+    .filter((s) => s.length > 0);
 
   if (!name || !sku || !partNumber || !brand) {
     throw new Error("Faltan campos obligatorios (nombre, SKU, número de parte, marca).");
@@ -40,6 +43,8 @@ export async function crearProducto(formData: FormData) {
       priceCents: Math.round(priceMxn * 100),
       stock,
       condition,
+      categoryId,
+      equivalences,
       status: "BORRADOR",
     },
   });
