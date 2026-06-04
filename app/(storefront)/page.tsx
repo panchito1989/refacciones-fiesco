@@ -42,7 +42,7 @@ export default async function HomePage() {
               name="q"
               placeholder="Número de parte, nombre o marca…"
               aria-label="Buscar refacciones"
-              className="flex-1 rounded-lg px-4 py-3 text-slate-900 placeholder:text-slate-400"
+              className="flex-1 rounded-lg bg-white px-4 py-3 text-slate-900 placeholder:text-slate-400"
             />
             <button
               type="submit"

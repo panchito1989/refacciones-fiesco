@@ -13,7 +13,7 @@ export function SiteHeader() {
             type="search"
             name="q"
             placeholder="Busca por número de parte, nombre o marca…"
-            className="w-full rounded-md border-0 px-3 py-2 text-slate-900 placeholder:text-slate-400"
+            className="w-full rounded-md border-0 bg-white px-3 py-2 text-slate-900 placeholder:text-slate-400"
             aria-label="Buscar refacciones"
           />
           <button type="submit" className="rounded-md bg-amber-500 px-4 py-2 font-semibold text-slate-900 hover:bg-amber-600">
