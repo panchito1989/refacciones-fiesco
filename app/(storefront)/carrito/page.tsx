@@ -3,13 +3,11 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { getCart } from "@/lib/cart";
 import { formatMXN } from "@/lib/format";
-import { isFreeShipping, FREE_SHIPPING_THRESHOLD_CENTS } from "@/lib/shipping";
+import { isFreeShipping, FREE_SHIPPING_THRESHOLD_CENTS, SHIPPING_FLAT_CENTS } from "@/lib/shipping";
 import { ButtonLink } from "@/components/ui/button";
 import { quitarDelCarrito, vaciarCarrito } from "./actions";
 
 export const metadata: Metadata = { title: "Tu carrito", robots: { index: false } };
-
-const SHIPPING_FLAT_CENTS = 19900; // $199 tarifa fija si no aplica envío gratis
 
 export default async function CarritoPage() {
   const lines = await getCart();
