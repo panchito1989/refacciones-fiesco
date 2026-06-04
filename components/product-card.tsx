@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Package } from "lucide-react";
 import { formatMXN } from "@/lib/format";
 import { productPath } from "@/lib/slug";
 
@@ -16,15 +17,20 @@ export function ProductCard({ product }: { product: ProductCardData }) {
   return (
     <Link
       href={productPath(product)}
-      className="flex flex-col rounded-lg border border-slate-200 bg-white p-4 transition hover:border-blue-300 hover:shadow-md"
+      className="group flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white transition hover:border-blue-300 hover:shadow-lg"
     >
-      <p className="text-xs font-medium uppercase tracking-wide text-blue-700">{product.brand}</p>
-      <h3 className="mt-1 font-medium text-slate-900">{product.name}</h3>
-      <p className="text-xs text-slate-400">Núm. de parte {product.partNumber}</p>
-      <p className="mt-3 text-lg font-bold text-slate-900">{formatMXN(product.priceCents)}</p>
-      <span className="mt-1 inline-block w-fit rounded bg-slate-100 px-2 py-0.5 text-xs text-slate-600">
-        {product.condition === "NUEVO" ? "Nuevo" : "Recuperado"}
-      </span>
+      <div className="relative flex aspect-square items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200 text-slate-300">
+        <Package className="h-12 w-12" aria-hidden />
+        <span className="absolute left-2 top-2 rounded bg-white/90 px-2 py-0.5 text-xs font-medium text-slate-600 shadow-sm">
+          {product.condition === "NUEVO" ? "Nuevo" : "Recuperado"}
+        </span>
+      </div>
+      <div className="flex flex-1 flex-col p-4">
+        <p className="text-xs font-semibold uppercase tracking-wide text-blue-700">{product.brand}</p>
+        <h3 className="mt-1 line-clamp-2 text-sm font-medium text-slate-900">{product.name}</h3>
+        <p className="mt-0.5 text-xs text-slate-400">Parte {product.partNumber}</p>
+        <p className="mt-auto pt-3 text-lg font-bold text-slate-900">{formatMXN(product.priceCents)}</p>
+      </div>
     </Link>
   );
 }

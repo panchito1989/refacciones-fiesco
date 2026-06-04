@@ -1,9 +1,10 @@
 import Link from "next/link";
+import { ShoppingCart, User } from "lucide-react";
 
 export function SiteHeader() {
   return (
-    <header className="bg-blue-700 text-white">
-      <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-4 p-4">
+    <header className="sticky top-0 z-50 bg-blue-700 text-white shadow-sm">
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-4 px-4 py-3">
         <Link href="/" className="text-lg font-bold whitespace-nowrap">
           Refacciones Fiesco
         </Link>
@@ -19,9 +20,15 @@ export function SiteHeader() {
             Buscar
           </button>
         </form>
-        <nav className="order-2 ml-auto flex items-center gap-4 text-sm sm:order-3">
-          <Link href="/carrito" className="hover:underline">Carrito</Link>
-          <Link href="/ingresar" className="hover:underline">Mi cuenta</Link>
+        <nav className="order-2 ml-auto flex items-center gap-5 text-sm sm:order-3">
+          <Link href="/carrito" className="flex items-center gap-1 hover:text-amber-300">
+            <ShoppingCart className="h-5 w-5" aria-hidden />
+            <span className="hidden sm:inline">Carrito</span>
+          </Link>
+          <Link href="/ingresar" className="flex items-center gap-1 hover:text-amber-300">
+            <User className="h-5 w-5" aria-hidden />
+            <span className="hidden sm:inline">Mi cuenta</span>
+          </Link>
         </nav>
       </div>
     </header>
