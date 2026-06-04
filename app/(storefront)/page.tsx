@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import { ProductCard } from "@/components/product-card";
+import { CategoryNav } from "@/components/category-nav";
 
 export const metadata: Metadata = {
   title: "Refacciones de electrodomésticos — Refacciones Fiesco",
@@ -23,6 +24,11 @@ export default async function HomePage() {
           Nuevas y recuperadas con garantía. Si no la tenemos, te la conseguimos.
           Usa el buscador de arriba por número de parte, nombre o marca.
         </p>
+      </section>
+
+      <section className="pb-4">
+        <h2 className="mb-3 text-lg font-semibold">Categorías</h2>
+        <CategoryNav />
       </section>
 
       <section>
