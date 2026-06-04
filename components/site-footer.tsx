@@ -21,7 +21,7 @@ export function SiteFooter() {
         <div>
           <p className="font-semibold text-white">Ayuda</p>
           <ul className="mt-3 space-y-2 text-sm text-slate-400">
-            <li>Servicio técnico a domicilio</li>
+            <li><Link href="/servicio-tecnico" className="hover:text-white">Servicio técnico a domicilio</Link></li>
             <li>Envíos y entregas</li>
             <li>Garantías</li>
             <li>Igualamos precios</li>

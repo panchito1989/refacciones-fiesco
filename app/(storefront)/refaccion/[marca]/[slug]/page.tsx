@@ -98,6 +98,12 @@ export default async function ProductPage({
           ))}
         </p>
       )}
+      <Link
+        href={`/servicio-tecnico?sku=${encodeURIComponent(product.sku)}&producto=${encodeURIComponent(product.name)}`}
+        className="mt-4 inline-block text-sm font-medium text-blue-700 hover:underline"
+      >
+        ¿No puedes instalarla? Que un técnico lo haga →
+      </Link>
       {product.description && <p className="mt-4">{product.description}</p>}
     </div>
   );
