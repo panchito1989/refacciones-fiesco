@@ -9,7 +9,8 @@
     "lint": "eslint",
     "test": "vitest run",
     "db:seed:cat": "node --env-file=.env prisma/seed-categorias.mjs",
-    "db:seed:admin": "node --env-file=.env prisma/seed-admin.mjs"
+    "db:seed:admin": "node --env-file=.env prisma/seed-admin.mjs",
+    "db:seed:tecnicos": "node --env-file=.env prisma/seed-tecnicos.mjs"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",

@@ -114,3 +114,39 @@ model OrderItem {
   priceCents Int
   qty        Int
 }
+
+enum SolicitudEstado {
+  SOLICITADO
+  AGENDADO
+  EN_PROCESO
+  COMPLETADO
+  CANCELADO
+}
+
+model Tecnico {
+  id             String              @id @default(cuid())
+  nombre         String
+  telefono       String
+  ciudades       String[]            @default([])
+  especialidades String[]            @default([])
+  activo         Boolean             @default(true)
+  rating         Float?
+  solicitudes    SolicitudServicio[]
+  createdAt      DateTime            @default(now())
+}
+
+model SolicitudServicio {
+  id          String          @id @default(cuid())
+  nombre      String
+  telefono    String
+  ciudad      String
+  direccion   String
+  descripcion String
+  productoSku String?
+  estado      SolicitudEstado @default(SOLICITADO)
+  tecnicoId   String?
+  tecnico     Tecnico?        @relation(fields: [tecnicoId], references: [id])
+  createdAt   DateTime        @default(now())
+
+  @@index([estado])
+}
