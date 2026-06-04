@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { formatMXN } from "@/lib/format";
 import { slugify } from "@/lib/slug";
@@ -82,6 +83,19 @@ export default async function ProductPage({
       <p className="mt-1 text-sm">
         {product.stock > 0 ? "En existencia" : "Bajo pedido — te lo conseguimos"}
       </p>
+      {product.equivalences.length > 0 && (
+        <p className="mt-3 text-sm">
+          Equivale a:{" "}
+          {product.equivalences.map((eq, i) => (
+            <span key={eq}>
+              {i > 0 && ", "}
+              <Link href={`/equivalencia/${encodeURIComponent(eq)}`} className="underline">
+                {eq}
+              </Link>
+            </span>
+          ))}
+        </p>
+      )}
       {product.description && <p className="mt-4">{product.description}</p>}
     </div>
   );

@@ -8,7 +8,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [products, categories] = await Promise.all([
     prisma.product.findMany({
       where: { status: "PUBLICADO" },
-      select: { brandSlug: true, partNumber: true, slug: true, updatedAt: true },
+      select: { brandSlug: true, partNumber: true, slug: true, equivalences: true, updatedAt: true },
     }),
     prisma.category.findMany({ select: { slug: true, updatedAt: true } }),
   ]);
@@ -22,5 +22,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: c.updatedAt,
   }));
 
-  return [{ url: SITE, lastModified: new Date() }, ...categoryUrls, ...productUrls];
+  const parts = new Set<string>();
+  for (const p of products) {
+    parts.add(p.partNumber.toUpperCase());
+    for (const eq of p.equivalences) parts.add(eq.toUpperCase());
+  }
+  const equivalenceUrls = [...parts].map((part) => ({
+    url: `${SITE}/equivalencia/${encodeURIComponent(part)}`,
+  }));
+
+  return [
+    { url: SITE, lastModified: new Date() },
+    ...categoryUrls,
+    ...productUrls,
+    ...equivalenceUrls,
+  ];
 }
