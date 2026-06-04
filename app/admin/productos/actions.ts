@@ -6,9 +6,7 @@ import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/auth";
 import { slugify } from "@/lib/slug";
 
-export async function crearProducto(formData: FormData) {
-  await requireAdmin(); // solo ADMIN puede crear productos (server action endpoint independiente)
-
+function leerCampos(formData: FormData) {
   const name = String(formData.get("name") ?? "").trim();
   const sku = String(formData.get("sku") ?? "").trim();
   const partNumber = String(formData.get("partNumber") ?? "").trim();
@@ -17,6 +15,8 @@ export async function crearProducto(formData: FormData) {
   const stock = Number(formData.get("stock") ?? 0);
   const condition =
     String(formData.get("condition") ?? "NUEVO") === "RECUPERADO" ? "RECUPERADO" : "NUEVO";
+  const status =
+    String(formData.get("status") ?? "BORRADOR") === "PUBLICADO" ? "PUBLICADO" : "BORRADOR";
   const categoryIdRaw = String(formData.get("categoryId") ?? "").trim();
   const categoryId = categoryIdRaw.length > 0 ? categoryIdRaw : null;
   const equivalences = String(formData.get("equivalences") ?? "")
@@ -27,24 +27,51 @@ export async function crearProducto(formData: FormData) {
   if (!name || !sku || !partNumber || !brand) {
     throw new Error("Faltan campos obligatorios (nombre, SKU, número de parte, marca).");
   }
+  return {
+    name,
+    sku,
+    partNumber,
+    brand,
+    brandSlug: slugify(brand),
+    slug: slugify(name),
+    priceCents: Math.round(priceMxn * 100),
+    stock,
+    condition: condition as "NUEVO" | "RECUPERADO",
+    status: status as "BORRADOR" | "PUBLICADO",
+    categoryId,
+    equivalences,
+  };
+}
 
-  await prisma.product.create({
-    data: {
-      name,
-      sku,
-      partNumber,
-      brand,
-      brandSlug: slugify(brand),
-      slug: slugify(name),
-      priceCents: Math.round(priceMxn * 100),
-      stock,
-      condition,
-      categoryId,
-      equivalences,
-      status: "BORRADOR",
-    },
-  });
-
+export async function crearProducto(formData: FormData) {
+  await requireAdmin();
+  const data = leerCampos(formData);
+  await prisma.product.create({ data });
   revalidatePath("/admin/productos");
   redirect("/admin/productos");
+}
+
+export async function actualizarProducto(id: string, formData: FormData) {
+  await requireAdmin();
+  const data = leerCampos(formData);
+  await prisma.product.update({ where: { id }, data });
+  revalidatePath("/admin/productos");
+  redirect("/admin/productos");
+}
+
+export async function eliminarProducto(id: string) {
+  await requireAdmin();
+  await prisma.product.delete({ where: { id } });
+  revalidatePath("/admin/productos");
+}
+
+export async function togglePublicado(id: string) {
+  await requireAdmin();
+  const p = await prisma.product.findUnique({ where: { id }, select: { status: true } });
+  if (!p) return;
+  await prisma.product.update({
+    where: { id },
+    data: { status: p.status === "PUBLICADO" ? "BORRADOR" : "PUBLICADO" },
+  });
+  revalidatePath("/admin/productos");
 }
