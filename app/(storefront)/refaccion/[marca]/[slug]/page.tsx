@@ -70,7 +70,12 @@ export default async function ProductPage({
     <div className="mx-auto max-w-3xl p-6">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd)
+            .replace(/</g, "\\u003c")
+            .replace(/>/g, "\\u003e")
+            .replace(/&/g, "\\u0026"),
+        }}
       />
       <h1 className="text-2xl font-bold">{product.name}</h1>
       <p className="text-gray-600">

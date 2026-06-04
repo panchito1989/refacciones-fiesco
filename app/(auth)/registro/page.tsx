@@ -29,7 +29,7 @@ export default function RegistroPage() {
       <h1 className="mb-4 text-xl font-semibold">Crear cuenta</h1>
       <form onSubmit={onSubmit} className="flex flex-col gap-3">
         <input className="rounded border border-slate-300 p-2" type="email" placeholder="Correo" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        <input className="rounded border border-slate-300 p-2" type="password" placeholder="Contraseña (mín. 6)" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={6} />
+        <input className="rounded border border-slate-300 p-2" type="password" placeholder="Contraseña (mín. 8)" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={8} />
         {error && <p className="text-sm text-red-600">{error}</p>}
         <button type="submit" className="rounded-md bg-blue-700 p-2 text-white hover:bg-blue-800">Registrarme</button>
       </form>
