@@ -65,7 +65,7 @@ export default async function ProductPage({
   };
 
   return (
-    <main className="mx-auto max-w-3xl p-6">
+    <div className="mx-auto max-w-3xl p-6">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -83,6 +83,6 @@ export default async function ProductPage({
         {product.stock > 0 ? "En existencia" : "Bajo pedido — te lo conseguimos"}
       </p>
       {product.description && <p className="mt-4">{product.description}</p>}
-    </main>
+    </div>
   );
 }
