@@ -4,6 +4,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { formatMXN } from "@/lib/format";
 import { slugify } from "@/lib/slug";
+import { AddToCart } from "@/components/add-to-cart";
 
 type Params = { marca: string; slug: string };
 
@@ -83,6 +84,7 @@ export default async function ProductPage({
       <p className="mt-1 text-sm">
         {product.stock > 0 ? "En existencia" : "Bajo pedido — te lo conseguimos"}
       </p>
+      <AddToCart sku={product.sku} />
       {product.equivalences.length > 0 && (
         <p className="mt-3 text-sm">
           Equivale a:{" "}
