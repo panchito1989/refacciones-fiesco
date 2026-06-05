@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Plus } from "lucide-react";
+import { Plus, Upload } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { formatMXN } from "@/lib/format";
 import { eliminarProducto, togglePublicado } from "./actions";
@@ -15,13 +15,22 @@ export default async function ProductosPage() {
           <h1 className="text-2xl font-bold text-slate-900">Productos</h1>
           <p className="text-sm text-slate-500">Gestiona tu catálogo</p>
         </div>
-        <Link
-          href="/admin/productos/nuevo"
-          className="inline-flex items-center gap-2 rounded-lg bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-800"
-        >
-          <Plus size={16} />
-          Nuevo producto
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link
+            href="/admin/productos/importar"
+            className="inline-flex items-center gap-2 rounded-lg border border-slate-300 px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+          >
+            <Upload size={16} />
+            Importar CSV
+          </Link>
+          <Link
+            href="/admin/productos/nuevo"
+            className="inline-flex items-center gap-2 rounded-lg bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-800"
+          >
+            <Plus size={16} />
+            Nuevo producto
+          </Link>
+        </div>
       </div>
 
       {/* Table card */}

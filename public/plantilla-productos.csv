@@ -1,0 +1,26 @@
+sku,numero_parte,nombre,marca,categoria,condicion,precio_mxn,stock,equivalencias,descripcion,estado
+EJEMPLO-001,RPW123,EJEMPLO - borra esta fila antes de importar,Universal,lavado,NUEVO,349,10,WP8540024;134051200,"Fila de ejemplo para mostrar el formato. El campo equivalencias separa numeros compatibles con punto y coma. Borra esta fila.",BORRADOR
+BOMBA-DES-LAV,,Bomba de desague para lavadora,Universal,lavado,NUEVO,,,,"Bomba de drenado para lavadora automatica. Compatible con varios modelos de Mabe, Easy, Whirlpool, LG y Samsung. Verifica el numero de parte de tu bomba antes de comprar.",BORRADOR
+VAL-AGUA-LAV,,Valvula de entrada de agua doble para lavadora,Universal,lavado,NUEVO,,,,"Valvula solenoide de llenado de doble via. Compatible con Mabe, Easy, Whirlpool, Samsung y LG. Verifica voltaje y numero de parte.",BORRADOR
+INT-TAPA-LAV,,Interruptor de tapa lid switch para lavadora,Universal,lavado,NUEVO,,,,"Switch de seguridad de tapa. Compatible con Whirlpool, Mabe y Easy. Verifica el modelo.",BORRADOR
+BANDA-LAV,,Banda o correa para lavadora,Universal,lavado,NUEVO,,,,"Banda de transmision para lavadora. Hay varias medidas segun el modelo (Mabe, Easy, Whirlpool, GE). Indica la medida o numero de parte.",BORRADOR
+CAP-MOT-LAV,,Capacitor de motor de lavadora,Universal,lavado,NUEVO,,,,"Capacitor de arranque y marcha para motor de lavadora. Verifica microfaradios (uF) y voltaje.",BORRADOR
+ACOPLE-LAV,,Acoplador de transmision coupler para lavadora,Universal,lavado,NUEVO,,,,"Acoplamiento de motor a transmision. Compatible con muchos modelos Whirlpool y Mabe. Verifica numero de parte.",BORRADOR
+PRESOSTATO-LAV,,Sensor de nivel de agua presostato para lavadora,Universal,lavado,NUEVO,,,,"Interruptor de presion y nivel de agua. Compatible con Mabe, Easy, Whirlpool, Samsung y LG.",BORRADOR
+SUSP-LAV,,Suspensores y amortiguadores para lavadora,Universal,lavado,NUEVO,,,,"Varillas suspensoras o amortiguadores de tina. Verifica el modelo de tu lavadora.",BORRADOR
+TERMOSTATO-REF,,Termostato para refrigerador,Universal,refrigeracion,NUEVO,,,,"Termostato de control de temperatura. Compatible con Mabe, Whirlpool, Easy y Samsung. Verifica el numero de parte.",BORRADOR
+TERMISTOR-REF,,Sensor termistor de temperatura para refrigerador,Universal,refrigeracion,NUEVO,,,,"Sensor de temperatura (termistor) para refrigerador no frost. Compatible con Samsung, LG, Mabe y Whirlpool.",BORRADOR
+MOT-VENT-REF,,Motor de ventilador del evaporador para refrigerador,Universal,refrigeracion,NUEVO,,,,"Motor del ventilador del evaporador (no frost). Verifica voltaje y numero de parte (Mabe, Whirlpool, Samsung, LG).",BORRADOR
+RELE-COMP-REF,,Relevador y protector termico de compresor,Universal,refrigeracion,NUEVO,,,,"Rele de arranque mas protector termico para compresor. Verifica los HP o el modelo del compresor.",BORRADOR
+RES-DESH-REF,,Resistencia de deshielo defrost para refrigerador,Universal,refrigeracion,NUEVO,,,,"Resistencia o parrilla de descongelado para refrigerador no frost. Verifica watts y numero de parte.",BORRADOR
+TIMER-DESH-REF,,Timer de deshielo para refrigerador,Universal,refrigeracion,NUEVO,,,,"Temporizador de descongelado. Compatible con varios modelos Mabe y Whirlpool. Verifica numero de parte.",BORRADOR
+BIMETAL-DESH-REF,,Bimetal termostato de deshielo,Universal,refrigeracion,NUEVO,,,,"Bimetal de descongelado (defrost). Verifica la temperatura de corte y el modelo.",BORRADOR
+IGNITOR-EST,,Bujia encendedor ignitor para estufa,Universal,coccion,NUEVO,,,,"Encendedor electronico para estufa de gas. Compatible con Mabe, Whirlpool, Acros e IEM. Verifica numero de parte.",BORRADOR
+TERMOPAR-EST,,Termopar para estufa de gas,Universal,coccion,NUEVO,,,,"Termopar de seguridad para estufa u horno de gas. Verifica el largo y la rosca.",BORRADOR
+PERILLA-EST,,Perilla universal para estufa,Universal,coccion,NUEVO,,,,"Perilla de control para estufa de gas, universal o ajustable. Verifica el tipo de eje.",BORRADOR
+RES-HORNO,,Resistencia de horno electrico,Universal,coccion,NUEVO,,,,"Resistencia de horneado (bake element). Verifica watts, voltaje y medidas.",BORRADOR
+CAP-MINISPLIT,,Capacitor para minisplit,Universal,climas,NUEVO,,,,"Capacitor doble (compresor mas ventilador) para aire acondicionado minisplit. Verifica uF y voltaje.",BORRADOR
+CONTROL-AC,,Control remoto universal para aire acondicionado,Universal,climas,NUEVO,,,,"Control remoto universal para minisplit o aire acondicionado. Compatible con la mayoria de las marcas.",BORRADOR
+MOT-VENT-MINISPLIT,,Motor de ventilador para minisplit interior,Universal,climas,NUEVO,,,,"Motor del ventilador de la unidad interior. Verifica voltaje, potencia y numero de parte.",BORRADOR
+CARBONES-MOT,,Carbones de motor par universales,Universal,pequenos-electrodomesticos,NUEVO,,,,"Par de carbones o escobillas de motor universal para herramienta y electrodomesticos. Verifica medidas.",BORRADOR
+CUCHILLA-LIC,,Cuchilla universal para licuadora,Universal,pequenos-electrodomesticos,NUEVO,,,,"Cuchilla o aspa para licuadora. Compatible con Oster, Hamilton Beach y Taurus. Verifica el modelo del vaso.",BORRADOR
