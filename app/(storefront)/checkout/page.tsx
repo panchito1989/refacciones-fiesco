@@ -3,14 +3,18 @@ import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/auth";
 import { resolveCart } from "@/lib/orders";
 import { formatMXN } from "@/lib/format";
+import { getClienteEstado, descuentoPreferente } from "@/lib/preferente";
 import { crearPedido } from "./actions";
 
 export const metadata: Metadata = { title: "Finalizar compra", robots: { index: false } };
 
 export default async function CheckoutPage() {
-  await requireUser();
-  const { lines, subtotalCents, shippingCents, totalCents } = await resolveCart();
+  const user = await requireUser();
+  const { lines, subtotalCents, shippingCents } = await resolveCart();
   if (lines.length === 0) redirect("/carrito");
+  const { preferente } = await getClienteEstado(user.id);
+  const discountCents = preferente ? descuentoPreferente(subtotalCents) : 0;
+  const totalCents = subtotalCents - discountCents + shippingCents;
 
   const input = "rounded-md border border-slate-300 p-2";
 
@@ -54,6 +58,11 @@ export default async function CheckoutPage() {
         <div className="mt-3 space-y-1 text-sm">
           <div className="flex justify-between"><span>Subtotal</span><span>{formatMXN(subtotalCents)}</span></div>
           <div className="flex justify-between"><span>Envío</span><span>{shippingCents === 0 ? "Gratis" : formatMXN(shippingCents)}</span></div>
+            {preferente && (
+              <div className="flex justify-between text-green-700">
+                <span>Descuento cliente preferente (5%)</span><span>-{formatMXN(discountCents)}</span>
+              </div>
+            )}
           <div className="flex justify-between border-t border-slate-300 pt-2 font-bold"><span>Total</span><span>{formatMXN(totalCents)}</span></div>
         </div>
       </aside>

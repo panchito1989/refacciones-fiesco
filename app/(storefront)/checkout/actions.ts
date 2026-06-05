@@ -5,13 +5,18 @@ import { prisma } from "@/lib/prisma";
 import { getProfile } from "@/lib/auth";
 import { writeCart } from "@/lib/cart";
 import { resolveCart } from "@/lib/orders";
+import { getClienteEstado, descuentoPreferente } from "@/lib/preferente";
 
 export async function crearPedido(formData: FormData) {
   const profile = await getProfile();
   if (!profile) redirect("/ingresar");
 
-  const { lines, subtotalCents, shippingCents, totalCents } = await resolveCart();
+  const { lines, subtotalCents, shippingCents } = await resolveCart();
   if (lines.length === 0) redirect("/carrito");
+
+  const { preferente } = await getClienteEstado(profile.id);
+  const discountCents = preferente ? descuentoPreferente(subtotalCents) : 0;
+  const totalCents = subtotalCents - discountCents + shippingCents;
 
   const paymentMethod =
     String(formData.get("paymentMethod") ?? "TRANSFERENCIA") === "EFECTIVO" ? "EFECTIVO" : "TRANSFERENCIA";
@@ -34,6 +39,7 @@ export async function crearPedido(formData: FormData) {
       status: "PENDIENTE_PAGO",
       paymentMethod,
       subtotalCents,
+      discountCents,
       shippingCents,
       totalCents,
       ...ship,

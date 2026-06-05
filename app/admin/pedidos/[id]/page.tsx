@@ -35,6 +35,9 @@ export default async function AdminPedidoDetallePage({ params }: { params: Promi
       <div className="mt-2 text-sm">
         <div className="flex justify-between"><span>Subtotal</span><span>{formatMXN(order.subtotalCents)}</span></div>
         <div className="flex justify-between"><span>Envío</span><span>{order.shippingCents === 0 ? "Gratis" : formatMXN(order.shippingCents)}</span></div>
+        {order.discountCents > 0 && (
+          <div className="flex justify-between text-green-700"><span>Descuento preferente</span><span>-{formatMXN(order.discountCents)}</span></div>
+        )}
         <div className="flex justify-between font-bold"><span>Total</span><span>{formatMXN(order.totalCents)}</span></div>
       </div>
 
