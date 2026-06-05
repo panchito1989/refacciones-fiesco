@@ -24,7 +24,7 @@ export function SiteFooter() {
             <li><Link href="/servicio-tecnico" className="hover:text-white">Servicio técnico a domicilio</Link></li>
             <li>Envíos y entregas</li>
             <li>Garantías</li>
-            <li>Igualamos precios</li>
+            <li><Link href="/igualar-precio" className="hover:text-white">Igualamos precios</Link></li>
           </ul>
         </div>
         <div>

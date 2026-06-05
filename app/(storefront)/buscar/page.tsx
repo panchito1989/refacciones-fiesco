@@ -40,8 +40,10 @@ export default async function BuscarPage({
       </h1>
       {query && products.length === 0 && (
         <p className="text-gray-600">
-          No encontramos "{query}". Pero no te preocupes: <strong>te lo conseguimos</strong>.
-          Contáctanos y lo buscamos por ti.
+          No encontramos "{query}". Pero no te preocupes:{" "}
+          <a href={`/conseguir?q=${encodeURIComponent(query)}`} className="font-semibold text-blue-700 underline">
+            te lo conseguimos
+          </a>.
         </p>
       )}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">

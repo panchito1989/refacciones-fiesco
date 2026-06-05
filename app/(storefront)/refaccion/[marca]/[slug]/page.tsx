@@ -109,6 +109,12 @@ export default async function ProductPage({
       >
         ¿No puedes instalarla? Que un técnico lo haga →
       </Link>
+      <Link
+        href={`/igualar-precio?sku=${encodeURIComponent(product.sku)}&producto=${encodeURIComponent(product.name)}`}
+        className="mt-2 block text-sm font-medium text-blue-700 hover:underline"
+      >
+        ¿Lo viste más barato? Igualamos el precio →
+      </Link>
       {product.description && <p className="mt-4">{product.description}</p>}
     </div>
   );
