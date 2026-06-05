@@ -22,6 +22,7 @@ export default async function AdminLayout({
         <Link href="/admin/productos" className="text-blue-700 hover:underline">Productos</Link>
         <Link href="/admin/pedidos" className="text-blue-700 hover:underline">Pedidos</Link>
         <Link href="/admin/solicitudes" className="text-blue-700 hover:underline">Solicitudes</Link>
+        <Link href="/admin/cotizaciones" className="text-blue-700 hover:underline">Cotizaciones</Link>
       </nav>
       {children}
     </div>
