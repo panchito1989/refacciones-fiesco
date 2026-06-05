@@ -82,6 +82,17 @@ export default async function HomePage() {
         )}
       </section>
 
+      {/* Guías */}
+      <section className="mx-auto max-w-6xl px-6 pb-12">
+        <div className="rounded-xl border border-slate-200 bg-slate-50 p-6">
+          <h2 className="text-xl font-bold text-slate-900">Guías de reparación</h2>
+          <p className="mt-1 text-slate-600">Aprende a reparar tus electrodomésticos paso a paso.</p>
+          <Link href="/guias" className="mt-3 inline-block text-sm font-medium text-blue-700 hover:underline">
+            Ver guías →
+          </Link>
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="bg-slate-900 text-white">
         <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-6 py-14 text-center">

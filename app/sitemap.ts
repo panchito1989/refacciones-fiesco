@@ -5,12 +5,13 @@ import { productPath } from "@/lib/slug";
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [products, categories] = await Promise.all([
+  const [products, categories, guias] = await Promise.all([
     prisma.product.findMany({
       where: { status: "PUBLICADO" },
       select: { brandSlug: true, partNumber: true, slug: true, equivalences: true, updatedAt: true },
     }),
     prisma.category.findMany({ select: { slug: true, updatedAt: true } }),
+    prisma.guia.findMany({ where: { status: "PUBLICADO" }, select: { slug: true, updatedAt: true } }),
   ]);
 
   const productUrls = products.map((p) => ({
@@ -31,10 +32,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: `${SITE}/equivalencia/${encodeURIComponent(part)}`,
   }));
 
+  const guiaUrls = guias.map((g) => ({ url: `${SITE}/guias/${g.slug}`, lastModified: g.updatedAt }));
+
   return [
     { url: SITE, lastModified: new Date() },
+    { url: `${SITE}/guias`, lastModified: new Date() },
     ...categoryUrls,
     ...productUrls,
     ...equivalenceUrls,
+    ...guiaUrls,
   ];
 }
