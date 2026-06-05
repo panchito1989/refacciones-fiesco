@@ -176,3 +176,21 @@ model Lead {
 
   @@index([tipo])
 }
+
+enum GuiaStatus {
+  BORRADOR
+  PUBLICADO
+}
+
+model Guia {
+  id        String     @id @default(cuid())
+  titulo    String
+  slug      String     @unique
+  resumen   String
+  intro     String
+  pasos     Json       @default("[]")
+  faqs      Json       @default("[]")
+  status    GuiaStatus @default(BORRADOR)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
