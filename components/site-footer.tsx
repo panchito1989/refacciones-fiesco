@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { WHATSAPP_NUMEROS, waLink, waDisplay } from "@/lib/whatsapp";
 
 export function SiteFooter() {
   return (
@@ -8,6 +9,17 @@ export function SiteFooter() {
           <p className="text-lg font-bold text-white">Refacciones Fiesco</p>
           <p className="mt-2 text-sm">Refacciones de electrodomésticos, nuevas y recuperadas con garantía.</p>
           <p className="mt-2 text-sm font-medium text-amber-400">Si no la tenemos, te la conseguimos.</p>
+          <p className="mt-3 text-sm">
+            WhatsApp:{" "}
+            {WHATSAPP_NUMEROS.map((n, i) => (
+              <span key={n}>
+                {i > 0 && " · "}
+                <a href={waLink(n)} target="_blank" rel="noopener noreferrer" className="text-green-400 hover:text-green-300">
+                  {waDisplay(n)}
+                </a>
+              </span>
+            ))}
+          </p>
         </div>
         <div>
           <p className="font-semibold text-white">Categorías</p>
