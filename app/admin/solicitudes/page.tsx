@@ -1,5 +1,7 @@
 import { prisma } from "@/lib/prisma";
+import { cambiarEstadoSolicitud } from "./actions";
 
+const ESTADOS = ["SOLICITADO", "AGENDADO", "EN_PROCESO", "COMPLETADO", "CANCELADO"];
 const ESTADO_LABEL: Record<string, string> = {
   SOLICITADO: "Solicitado",
   AGENDADO: "Agendado",
@@ -34,7 +36,16 @@ export default async function SolicitudesPage() {
                 <td>{s.telefono}</td>
                 <td>{s.ciudad}</td>
                 <td className="max-w-xs">{s.descripcion}</td>
-                <td>{ESTADO_LABEL[s.estado] ?? s.estado}</td>
+                <td>
+                  <form action={cambiarEstadoSolicitud.bind(null, s.id)} className="flex items-center gap-1">
+                    <select name="estado" defaultValue={s.estado} className="rounded border border-slate-300 p-1 text-xs">
+                      {ESTADOS.map((e) => (
+                        <option key={e} value={e}>{ESTADO_LABEL[e]}</option>
+                      ))}
+                    </select>
+                    <button className="text-xs text-blue-700 hover:underline">OK</button>
+                  </form>
+                </td>
               </tr>
             ))}
           </tbody>
