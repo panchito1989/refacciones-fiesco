@@ -10,7 +10,8 @@
     "test": "vitest run",
     "db:seed:cat": "node --env-file=.env prisma/seed-categorias.mjs",
     "db:seed:admin": "node --env-file=.env prisma/seed-admin.mjs",
-    "db:seed:tecnicos": "node --env-file=.env prisma/seed-tecnicos.mjs"
+    "db:seed:tecnicos": "node --env-file=.env prisma/seed-tecnicos.mjs",
+    "storage:init": "node --env-file=.env.local scripts/seed-bucket.mjs"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",
