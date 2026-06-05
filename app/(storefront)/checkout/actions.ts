@@ -6,6 +6,7 @@ import { getProfile } from "@/lib/auth";
 import { writeCart } from "@/lib/cart";
 import { resolveCart } from "@/lib/orders";
 import { getClienteEstado, descuentoPreferente } from "@/lib/preferente";
+import { mpConfigurado, crearPreferenciaMP } from "@/lib/mercadopago";
 
 export async function crearPedido(formData: FormData) {
   const profile = await getProfile();
@@ -18,8 +19,11 @@ export async function crearPedido(formData: FormData) {
   const discountCents = preferente ? descuentoPreferente(subtotalCents) : 0;
   const totalCents = subtotalCents - discountCents + shippingCents;
 
-  const paymentMethod =
-    String(formData.get("paymentMethod") ?? "TRANSFERENCIA") === "EFECTIVO" ? "EFECTIVO" : "TRANSFERENCIA";
+  const pmRaw = String(formData.get("paymentMethod") ?? "TRANSFERENCIA");
+  const paymentMethod = (["TRANSFERENCIA", "EFECTIVO", "TARJETA"].includes(pmRaw) ? pmRaw : "TRANSFERENCIA") as
+    | "TRANSFERENCIA"
+    | "EFECTIVO"
+    | "TARJETA";
 
   const ship = {
     shipName: String(formData.get("shipName") ?? "").trim(),
@@ -50,5 +54,15 @@ export async function crearPedido(formData: FormData) {
   });
 
   await writeCart([]);
+
+  if (paymentMethod === "TARJETA" && mpConfigurado) {
+    const initPoint = await crearPreferenciaMP({
+      orderId: order.id,
+      totalCents,
+      siteUrl: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+    });
+    redirect(initPoint);
+  }
+
   redirect(`/pedido/${order.id}`);
 }

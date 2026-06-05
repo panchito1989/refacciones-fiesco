@@ -4,6 +4,7 @@ import { requireUser } from "@/lib/auth";
 import { resolveCart } from "@/lib/orders";
 import { formatMXN } from "@/lib/format";
 import { getClienteEstado, descuentoPreferente } from "@/lib/preferente";
+import { mpConfigurado } from "@/lib/mercadopago";
 import { crearPedido } from "./actions";
 
 export const metadata: Metadata = { title: "Finalizar compra", robots: { index: false } };
@@ -38,7 +39,14 @@ export default async function CheckoutPage() {
         <label className="flex items-center gap-2">
           <input type="radio" name="paymentMethod" value="EFECTIVO" /> Efectivo / OXXO
         </label>
-        <p className="text-xs text-slate-400">Pago con tarjeta (Mercado Pago) próximamente.</p>
+        {mpConfigurado && (
+          <label className="flex items-center gap-2">
+            <input type="radio" name="paymentMethod" value="TARJETA" /> Tarjeta (Mercado Pago)
+          </label>
+        )}
+        {!mpConfigurado && (
+          <p className="text-xs text-slate-400">Pago con tarjeta (Mercado Pago) próximamente.</p>
+        )}
 
         <button type="submit" className="mt-2 rounded-md bg-amber-500 px-6 py-3 font-semibold text-slate-900 hover:bg-amber-600">
           Confirmar pedido
