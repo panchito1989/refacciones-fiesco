@@ -77,6 +77,14 @@ export default async function ProductPage({
             .replace(/&/g, "\\u0026"),
         }}
       />
+      {product.photos[0] && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={product.photos[0]}
+          alt={product.name}
+          className="mb-4 max-h-80 w-full rounded-lg border border-slate-200 object-contain"
+        />
+      )}
       <h1 className="text-2xl font-bold">{product.name}</h1>
       <p className="text-gray-600">
         {product.brand} · Núm. de parte {product.partNumber}

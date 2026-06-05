@@ -11,16 +11,25 @@ type ProductCardData = {
   slug: string;
   priceCents: number;
   condition: "NUEVO" | "RECUPERADO";
+  photos: string[];
 };
 
 export function ProductCard({ product }: { product: ProductCardData }) {
+  const foto = product.photos?.[0];
   return (
     <Link
       href={productPath(product)}
       className="group flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white transition hover:border-blue-300 hover:shadow-lg"
     >
-      <div className="relative flex aspect-square items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200 text-slate-300">
-        <Package className="h-12 w-12" aria-hidden />
+      <div className="relative aspect-square bg-gradient-to-br from-slate-100 to-slate-200">
+        {foto ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={foto} alt={product.name} className="h-full w-full object-cover" />
+        ) : (
+          <span className="flex h-full w-full items-center justify-center text-slate-300">
+            <Package className="h-12 w-12" aria-hidden />
+          </span>
+        )}
         <span className="absolute left-2 top-2 rounded bg-white/90 px-2 py-0.5 text-xs font-medium text-slate-600 shadow-sm">
           {product.condition === "NUEVO" ? "Nuevo" : "Recuperado"}
         </span>
