@@ -33,6 +33,12 @@ export function ProductForm({
         ))}
       </select>
       <input name="equivalences" placeholder="Equivalencias (números de parte separados por coma)" className={input} defaultValue={product?.equivalences.join(", ") ?? ""} />
+      {product?.photos?.[0] && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={product.photos[0]} alt="" className="h-32 w-32 rounded border object-cover" />
+      )}
+      <input name="image" type="file" accept="image/*" className={input} />
+      <p className="-mt-1 text-xs text-slate-400">Foto del producto (opcional, máx ~6 MB).</p>
       <select name="status" className={input} defaultValue={product?.status ?? "BORRADOR"}>
         <option value="BORRADOR">Borrador (no visible en la tienda)</option>
         <option value="PUBLICADO">Publicado (visible)</option>
