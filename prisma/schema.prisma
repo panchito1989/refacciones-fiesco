@@ -150,3 +150,29 @@ model SolicitudServicio {
 
   @@index([estado])
 }
+
+enum LeadTipo {
+  CONSEGUIR
+  IGUALAR_PRECIO
+}
+
+enum LeadEstado {
+  NUEVO
+  EN_PROCESO
+  RESUELTO
+  CERRADO
+}
+
+model Lead {
+  id          String     @id @default(cuid())
+  tipo        LeadTipo
+  nombre      String
+  telefono    String
+  email       String?
+  detalle     String
+  productoSku String?
+  estado      LeadEstado @default(NUEVO)
+  createdAt   DateTime   @default(now())
+
+  @@index([tipo])
+}
