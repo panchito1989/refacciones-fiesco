@@ -24,9 +24,20 @@ export default async function HomePage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-blue-700 to-blue-900 text-white">
-        <div className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
-          <p className="mb-3 inline-block rounded-full bg-blue-600/50 px-3 py-1 text-xs font-medium tracking-wide text-blue-100">
+      <section className="relative isolate overflow-hidden text-white">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/hero.jpg"
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-gradient-to-r from-blue-950/95 via-blue-900/85 to-blue-900/60"
+        />
+        <div className="relative mx-auto max-w-6xl px-6 py-20 sm:py-28">
+          <p className="mb-3 inline-block rounded-full bg-blue-600/40 px-3 py-1 text-xs font-medium tracking-wide text-blue-100 ring-1 ring-white/15 backdrop-blur-sm">
             Piezas nuevas y recuperadas · Envíos a todo México
           </p>
           <h1 className="max-w-3xl text-4xl font-extrabold leading-tight sm:text-5xl">
