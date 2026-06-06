@@ -1,7 +1,11 @@
 import Link from "next/link";
-import { ShoppingCart, User } from "lucide-react";
+import { ShoppingCart, User, LogOut } from "lucide-react";
+import { getUser } from "@/lib/auth";
+import { cerrarSesion } from "@/app/(storefront)/logout-action";
 
-export function SiteHeader() {
+export async function SiteHeader() {
+  const user = await getUser();
+
   return (
     <header className="sticky top-0 z-50 bg-blue-700 text-white shadow-sm">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-4 px-4 py-3">
@@ -21,14 +25,33 @@ export function SiteHeader() {
           </button>
         </form>
         <nav className="order-2 ml-auto flex items-center gap-5 text-sm sm:order-3">
-          <Link href="/carrito" className="flex items-center gap-1 hover:text-amber-300">
+          <Link href="/carrito" className="flex items-center gap-1 hover:text-amber-300" aria-label="Carrito de compras">
             <ShoppingCart className="h-5 w-5" aria-hidden />
             <span className="hidden sm:inline">Carrito</span>
           </Link>
-          <Link href="/ingresar" className="flex items-center gap-1 hover:text-amber-300">
-            <User className="h-5 w-5" aria-hidden />
-            <span className="hidden sm:inline">Mi cuenta</span>
-          </Link>
+          {user ? (
+            <>
+              <Link href="/mi-cuenta" className="flex items-center gap-1 hover:text-amber-300" aria-label="Mi cuenta">
+                <User className="h-5 w-5" aria-hidden />
+                <span className="hidden sm:inline">Mi cuenta</span>
+              </Link>
+              <form action={cerrarSesion}>
+                <button
+                  type="submit"
+                  className="flex items-center gap-1 hover:text-amber-300"
+                  aria-label="Cerrar sesión"
+                >
+                  <LogOut className="h-5 w-5" aria-hidden />
+                  <span className="hidden sm:inline">Salir</span>
+                </button>
+              </form>
+            </>
+          ) : (
+            <Link href="/ingresar" className="flex items-center gap-1 hover:text-amber-300" aria-label="Ingresar">
+              <User className="h-5 w-5" aria-hidden />
+              <span className="hidden sm:inline">Ingresar</span>
+            </Link>
+          )}
         </nav>
       </div>
     </header>

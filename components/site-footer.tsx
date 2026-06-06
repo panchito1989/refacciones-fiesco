@@ -49,7 +49,8 @@ export function SiteFooter() {
         </div>
       </div>
       <div className="border-t border-slate-800 py-4 text-center text-xs text-slate-500">
-        © 2026 Refacciones Fiesco. Todos los derechos reservados.
+        © 2026 Refacciones Fiesco. Todos los derechos reservados.{" "}
+        <Link href="/admin/login" className="hover:text-slate-300">Admin</Link>
       </div>
     </footer>
   );
