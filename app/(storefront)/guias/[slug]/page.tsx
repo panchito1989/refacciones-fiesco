@@ -3,13 +3,27 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import type { Paso, Faq } from "@/lib/guias";
 
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
 type Params = Promise<{ slug: string }>;
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { slug } = await params;
   const guia = await prisma.guia.findUnique({ where: { slug } });
   if (!guia || guia.status !== "PUBLICADO") return { title: "Guía no encontrada" };
-  return { title: guia.titulo, description: guia.resumen };
+  const rawTitle = guia.titulo;
+  const title = rawTitle.length > 50 ? rawTitle.slice(0, 50) + "…" : rawTitle;
+  const description = guia.resumen ?? undefined;
+  return {
+    title,
+    description,
+    alternates: { canonical: `/guias/${slug}` },
+    openGraph: {
+      title,
+      description,
+      images: [{ url: "/hero.jpg" }],
+    },
+  };
 }
 
 export default async function GuiaPage({ params }: { params: Params }) {
@@ -39,8 +53,24 @@ export default async function GuiaPage({ params }: { params: Params }) {
   const escape = (o: unknown) =>
     JSON.stringify(o).replace(/</g, "\\u003c").replace(/>/g, "\\u003e").replace(/&/g, "\\u0026");
 
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Inicio", item: baseUrl },
+      { "@type": "ListItem", position: 2, name: "Guías", item: `${baseUrl}/guias` },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: guia.titulo,
+        item: `${baseUrl}/guias/${guia.slug}`,
+      },
+    ],
+  };
+
   return (
     <article className="mx-auto max-w-2xl p-6">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: escape(breadcrumbLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: escape(howTo) }} />
       {faqs.length > 0 && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: escape(faqLd) }} />

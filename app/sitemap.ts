@@ -34,9 +34,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const guiaUrls = guias.map((g) => ({ url: `${SITE}/guias/${g.slug}`, lastModified: g.updatedAt }));
 
+  const staticPages = ["/conseguir", "/igualar-precio", "/servicio-tecnico", "/buscar"].map(
+    (path) => ({ url: `${SITE}${path}`, lastModified: new Date() })
+  );
+
   return [
     { url: SITE, lastModified: new Date() },
     { url: `${SITE}/guias`, lastModified: new Date() },
+    ...staticPages,
     ...categoryUrls,
     ...productUrls,
     ...equivalenceUrls,

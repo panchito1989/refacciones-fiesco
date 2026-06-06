@@ -3,8 +3,16 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { formatMXN } from "@/lib/format";
-import { slugify } from "@/lib/slug";
+import { slugify, productPath } from "@/lib/slug";
 import { AddToCart } from "@/components/add-to-cart";
+
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
+const escape = (o: unknown) =>
+  JSON.stringify(o)
+    .replace(/</g, "\\u003c")
+    .replace(/>/g, "\\u003e")
+    .replace(/&/g, "\\u0026");
 
 type Params = { marca: string; slug: string };
 
@@ -12,6 +20,7 @@ async function getProduct(marca: string, slug: string) {
   // slug = "<numero-parte-slug>-<nombre-slug>"; el partNumber slug es el prefijo
   const products = await prisma.product.findMany({
     where: { brandSlug: marca, status: "PUBLICADO" },
+    include: { category: true },
   });
   return (
     products.find((p) => slug === `${slugify(p.partNumber)}-${p.slug}`) ?? null
@@ -26,11 +35,20 @@ export async function generateMetadata({
   const { marca, slug } = await params;
   const product = await getProduct(marca, slug);
   if (!product) return { title: "Producto no encontrado" };
+  const title = `${product.partNumber} — ${product.name}`;
+  const description =
+    product.description ??
+    `${product.name} para ${product.brand}. Refacción ${product.condition.toLowerCase()} con garantía. Envíos a todo México.`;
+  const path = productPath(product);
   return {
-    title: `${product.name} ${product.partNumber} — ${product.brand}`,
-    description:
-      product.description ??
-      `${product.name} para ${product.brand}. Refacción ${product.condition.toLowerCase()} con garantía. Envíos a todo México.`,
+    title,
+    description,
+    alternates: { canonical: path },
+    openGraph: {
+      title,
+      description,
+      images: product.photos?.length ? [{ url: product.photos[0] }] : [{ url: "/hero.jpg" }],
+    },
   };
 }
 
@@ -43,6 +61,9 @@ export default async function ProductPage({
   const product = await getProduct(marca, slug);
   if (!product) notFound();
 
+  const path = productPath(product);
+  const productUrl = `${baseUrl}${path}`;
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -50,7 +71,9 @@ export default async function ProductPage({
     sku: product.sku,
     mpn: product.partNumber,
     brand: { "@type": "Brand", name: product.brand },
-    description: product.description ?? undefined,
+    ...(product.description ? { description: product.description } : {}),
+    image: product.photos?.length ? product.photos : [`${baseUrl}/hero.jpg`],
+    url: productUrl,
     offers: {
       "@type": "Offer",
       priceCurrency: "MXN",
@@ -63,19 +86,44 @@ export default async function ProductPage({
         product.condition === "NUEVO"
           ? "https://schema.org/NewCondition"
           : "https://schema.org/RefurbishedCondition",
+      url: productUrl,
+      seller: { "@type": "Organization", name: "Refacciones Fiesco" },
     },
+  };
+
+  const breadcrumbItems: Array<{ "@type": string; position: number; name: string; item: string }> = [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: baseUrl },
+  ];
+  if (product.category) {
+    breadcrumbItems.push({
+      "@type": "ListItem",
+      position: 2,
+      name: product.category.name,
+      item: `${baseUrl}/categoria/${product.category.slug}`,
+    });
+  }
+  breadcrumbItems.push({
+    "@type": "ListItem",
+    position: breadcrumbItems.length + 1,
+    name: product.name,
+    item: productUrl,
+  });
+
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: breadcrumbItems,
   };
 
   return (
     <div className="mx-auto max-w-3xl p-6">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(jsonLd)
-            .replace(/</g, "\\u003c")
-            .replace(/>/g, "\\u003e")
-            .replace(/&/g, "\\u0026"),
-        }}
+        dangerouslySetInnerHTML={{ __html: escape(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: escape(breadcrumbLd) }}
       />
       {product.photos[0] && (
         // eslint-disable-next-line @next/next/no-img-element

@@ -15,11 +15,20 @@ const siteGraph = {
   "@graph": [
     {
       "@type": "Organization",
+      "@id": `${baseUrl}/#organization`,
       name: "Refacciones Fiesco",
       url: baseUrl,
+      logo: `${baseUrl}/hero.jpg`,
       description:
         "Tienda en línea de refacciones y repuestos para electrodomésticos en México. Piezas nuevas y recuperadas con garantía, envío gratis en compras mayores a $599.",
       areaServed: "MX",
+      sameAs: [],
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Ciudad de México",
+        addressRegion: "CDMX",
+        addressCountry: "MX",
+      },
       contactPoint: [
         {
           "@type": "ContactPoint",
@@ -28,10 +37,18 @@ const siteGraph = {
           areaServed: "MX",
           availableLanguage: ["Spanish"],
         },
+        {
+          "@type": "ContactPoint",
+          telephone: "+525627003256",
+          contactType: "customer service",
+          areaServed: "MX",
+          availableLanguage: ["Spanish"],
+        },
       ],
     },
     {
       "@type": "WebSite",
+      "@id": `${baseUrl}/#website`,
       name: "Refacciones Fiesco",
       url: baseUrl,
       inLanguage: "es-MX",

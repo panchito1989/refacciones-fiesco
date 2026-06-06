@@ -1,13 +1,47 @@
 # Refacciones Fiesco
 
-> Tienda en línea de refacciones de electrodomésticos en México. Piezas nuevas y
-> recuperadas con garantía, servicio técnico a domicilio y la promesa de conseguir
-> cualquier pieza.
+Tienda en línea de refacciones de electrodomésticos en México: piezas nuevas y recuperadas con garantía, envío gratis en compras mayores a $599, y la promesa de conseguir cualquier pieza que no tengamos en stock.
 
-## Qué encontrarás aquí
-- Catálogo de refacciones por número de parte, nombre y marca.
-- Equivalencias entre números de parte de distintas marcas.
-- Servicio técnico de instalación a domicilio.
+Sitio: https://refacciones-fiesco.vercel.app
+
+## Guías de reparación
+
+Tutoriales paso a paso para reparar electrodomésticos del hogar.
+
+- Índice de guías: https://refacciones-fiesco.vercel.app/guias
+- Cómo cambiar el termostato de un refrigerador: https://refacciones-fiesco.vercel.app/guias/como-cambiar-termostato-refrigerador
+
+## Categorías
+
+Catálogo organizado por tipo de refacción:
+
+- https://refacciones-fiesco.vercel.app/categoria/refrigeracion
+- https://refacciones-fiesco.vercel.app/categoria/lavado
+- https://refacciones-fiesco.vercel.app/categoria/coccion
+- https://refacciones-fiesco.vercel.app/categoria/climatizacion
+- https://refacciones-fiesco.vercel.app/categoria/pequeños-electrodomesticos
+
+## Cómo comprar
+
+- Busca por número de parte, nombre de pieza o marca del electrodoméstico.
+- Envío gratis en pedidos mayores a $599 MXN a todo México.
+- Métodos de pago: tarjeta de crédito/débito, transferencia bancaria, Mercado Pago.
+- Entrega estimada de 2–5 días hábiles según destino.
+
+## Garantía
+
+- Todas las refacciones nuevas incluyen garantía del fabricante.
+- Las refacciones recuperadas (reacondicionadas) incluyen garantía de tienda.
+- EXCEPCIÓN: las partes eléctricas (resistencias, tarjetas electrónicas, motores) no tienen garantía por su naturaleza de uso.
+
+## Te lo conseguimos
+
+Si no encontramos la pieza en nuestro catálogo, la buscamos por ti sin costo adicional.
+
+- Solicitar pieza: https://refacciones-fiesco.vercel.app/conseguir
+- Igualamos precio si la encontraste más barata: https://refacciones-fiesco.vercel.app/igualar-precio
+- Servicio técnico de instalación a domicilio: https://refacciones-fiesco.vercel.app/servicio-tecnico
 
 ## Contacto
-- Sitio: https://www.refaccionesfiesco.com
+
+- WhatsApp: +52 56 2204 2820 y +52 56 2700 3256

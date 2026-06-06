@@ -1,6 +1,11 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { requireUser } from "@/lib/auth";
 import { getClienteEstado, UMBRAL_PREFERENTE } from "@/lib/preferente";
+
+export const metadata: Metadata = {
+  robots: { index: false },
+};
 
 export default async function MiCuentaPage() {
   const user = await requireUser();

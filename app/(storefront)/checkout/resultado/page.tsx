@@ -1,5 +1,10 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { obtenerPagoMP, marcarPedidoPagado } from "@/lib/mercadopago";
+
+export const metadata: Metadata = {
+  robots: { index: false },
+};
 
 type SP = Promise<{ payment_id?: string; status?: string; external_reference?: string }>;
 

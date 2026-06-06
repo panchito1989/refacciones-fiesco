@@ -6,9 +6,10 @@ import { BenefitsBar } from "@/components/benefits-bar";
 import { CategoryGrid } from "@/components/category-grid";
 
 export const metadata: Metadata = {
-  title: "Refacciones de electrodomésticos — Refacciones Fiesco",
+  title: "Refacciones de electrodomésticos en México",
   description:
-    "Refacciones de electrodomésticos nuevas y recuperadas con garantía. Busca por número de parte, nombre o marca. Si no la tenemos, te la conseguimos. Envíos a todo México.",
+    "Refacciones nuevas y recuperadas con garantía. Busca por número de parte, nombre o marca. Si no la tenemos, te la conseguimos. Envíos a todo México.",
+  alternates: { canonical: "/" },
 };
 
 export default async function HomePage() {

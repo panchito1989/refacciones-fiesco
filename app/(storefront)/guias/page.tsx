@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "Guías de reparación de electrodomésticos",
   description:
     "Guías paso a paso para reparar tus electrodomésticos: refrigeradores, lavadoras y más. Con la refacción correcta, tú puedes.",
+  alternates: { canonical: "/guias" },
 };
 
 export default async function GuiasPage() {

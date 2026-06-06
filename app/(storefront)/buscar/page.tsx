@@ -13,7 +13,7 @@ export async function generateMetadata({
   const { q } = await searchParams;
   return {
     title: q ? `Resultados para "${q}"` : "Buscar refacciones",
-    robots: { index: false }, // las páginas de resultados no se indexan
+    robots: { index: false, follow: true }, // las páginas de resultados no se indexan
   };
 }
 
