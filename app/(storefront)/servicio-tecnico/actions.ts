@@ -4,11 +4,11 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 
 export async function crearSolicitud(formData: FormData) {
-  const nombre = String(formData.get("nombre") ?? "").trim();
-  const telefono = String(formData.get("telefono") ?? "").trim();
-  const ciudad = String(formData.get("ciudad") ?? "").trim();
-  const direccion = String(formData.get("direccion") ?? "").trim();
-  const descripcion = String(formData.get("descripcion") ?? "").trim();
+  const nombre = String(formData.get("nombre") ?? "").trim().slice(0, 120);
+  const telefono = String(formData.get("telefono") ?? "").trim().slice(0, 30);
+  const ciudad = String(formData.get("ciudad") ?? "").trim().slice(0, 80);
+  const direccion = String(formData.get("direccion") ?? "").trim().slice(0, 250);
+  const descripcion = String(formData.get("descripcion") ?? "").trim().slice(0, 1000);
   const skuRaw = String(formData.get("productoSku") ?? "").trim();
   const productoSku = skuRaw.length > 0 ? skuRaw : null;
 

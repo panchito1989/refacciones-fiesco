@@ -12,6 +12,7 @@ export function buildProductWhere(query: string): Prisma.ProductWhereInput {
       { name: { contains: q, mode: "insensitive" } },
       { partNumber: { contains: q, mode: "insensitive" } },
       { brand: { contains: q, mode: "insensitive" } },
+      { equivalences: { has: q.toUpperCase() } },
     ],
   };
 }

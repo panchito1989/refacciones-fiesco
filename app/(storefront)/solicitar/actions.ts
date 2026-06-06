@@ -6,10 +6,10 @@ import { prisma } from "@/lib/prisma";
 export async function crearLead(formData: FormData) {
   const tipo =
     String(formData.get("tipo") ?? "CONSEGUIR") === "IGUALAR_PRECIO" ? "IGUALAR_PRECIO" : "CONSEGUIR";
-  const nombre = String(formData.get("nombre") ?? "").trim();
-  const telefono = String(formData.get("telefono") ?? "").trim();
+  const nombre = String(formData.get("nombre") ?? "").trim().slice(0, 120);
+  const telefono = String(formData.get("telefono") ?? "").trim().slice(0, 30);
   const emailRaw = String(formData.get("email") ?? "").trim();
-  const detalle = String(formData.get("detalle") ?? "").trim();
+  const detalle = String(formData.get("detalle") ?? "").trim().slice(0, 1000);
   const skuRaw = String(formData.get("productoSku") ?? "").trim();
 
   if (!nombre || !telefono || !detalle) {

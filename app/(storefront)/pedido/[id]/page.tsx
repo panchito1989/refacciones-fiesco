@@ -45,6 +45,10 @@ export default async function PedidoPage({ params }: { params: Promise<{ id: str
             Realiza una transferencia SPEI por {formatMXN(order.totalCents)} a la cuenta que te
             compartiremos por WhatsApp/correo y envía tu comprobante. Apartamos tu pedido en cuanto lo recibamos.
           </p>
+        ) : order.paymentMethod === "TARJETA" ? (
+          <p className="mt-1 text-slate-600">
+            Tu pago con tarjeta (Mercado Pago) se procesa en línea. Si quedó pendiente, puedes reintentar desde tu pedido.
+          </p>
         ) : (
           <p className="mt-1 text-slate-600">
             Pago en efectivo: te contactaremos para coordinar el pago contra entrega o en punto OXXO.

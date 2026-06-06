@@ -33,24 +33,38 @@ export async function crearPedido(formData: FormData) {
     shipState: String(formData.get("shipState") ?? "").trim(),
     shipZip: String(formData.get("shipZip") ?? "").trim(),
   };
+
+  // Redirect back to form if shipping data is missing (fields are HTML-required; this is an edge case)
   if (!ship.shipName || !ship.shipPhone || !ship.shipStreet || !ship.shipCity || !ship.shipState || !ship.shipZip) {
-    throw new Error("Faltan datos de envío.");
+    redirect("/checkout");
   }
 
-  const order = await prisma.order.create({
-    data: {
-      customerId: profile.id,
-      status: "PENDIENTE_PAGO",
-      paymentMethod,
-      subtotalCents,
-      discountCents,
-      shippingCents,
-      totalCents,
-      ...ship,
-      items: {
-        create: lines.map((l) => ({ sku: l.sku, name: l.name, priceCents: l.priceCents, qty: l.qty })),
+  const order = await prisma.$transaction(async (tx) => {
+    const created = await tx.order.create({
+      data: {
+        customerId: profile.id,
+        status: "PENDIENTE_PAGO",
+        paymentMethod,
+        subtotalCents,
+        discountCents,
+        shippingCents,
+        totalCents,
+        ...ship,
+        items: {
+          create: lines.map((l) => ({ sku: l.sku, name: l.name, priceCents: l.priceCents, qty: l.qty })),
+        },
       },
-    },
+    });
+
+    // Decrement stock atomically, only when sufficient stock exists
+    for (const l of lines) {
+      await tx.product.updateMany({
+        where: { sku: l.sku, stock: { gte: l.qty } },
+        data: { stock: { decrement: l.qty } },
+      });
+    }
+
+    return created;
   });
 
   await writeCart([]);

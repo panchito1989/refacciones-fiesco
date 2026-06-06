@@ -85,9 +85,6 @@ export default async function CarritoPage() {
               Continuar al pago
             </ButtonLink>
           </div>
-          <p className="mt-2 text-right text-xs text-slate-400">
-            El pago (Mercado Pago) se habilita en el siguiente plan.
-          </p>
         </>
       )}
     </div>

@@ -9,6 +9,7 @@ describe("buildProductWhere", () => {
       { name: { contains: "Mabe", mode: "insensitive" } },
       { partNumber: { contains: "Mabe", mode: "insensitive" } },
       { brand: { contains: "Mabe", mode: "insensitive" } },
+      { equivalences: { has: "MABE" } },
     ]);
   });
 
