@@ -44,3 +44,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# herramienta de datos local (NO subir al repo público)
+/scripts/scrape-denek.mjs
