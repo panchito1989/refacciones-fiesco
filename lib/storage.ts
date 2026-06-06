@@ -3,7 +3,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 
 const BUCKET = "productos";
 
-const ALLOWED_MIME = new Set(["image/jpeg", "image/png", "image/webp", "image/gif"]);
+const ALLOWED_MIME = new Set(["image/jpeg", "image/jpg", "image/png", "image/webp", "image/gif"]);
 const ALLOWED_EXT = new Set(["jpg", "jpeg", "png", "webp", "gif"]);
 const MAX_SIZE = 6 * 1024 * 1024;
 

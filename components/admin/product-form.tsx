@@ -1,9 +1,41 @@
+"use client";
+
+import { useActionState, startTransition } from "react";
 import type { Product } from "@prisma/client";
+import type { FormState } from "@/app/admin/productos/actions";
 
 type Cat = { id: string; name: string };
 
 const inputCls =
   "w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30";
+
+async function compressImage(file: File): Promise<File> {
+  if (!file.type.startsWith("image/")) return file;
+  try {
+    const bitmap = await createImageBitmap(file); // throws for HEIC/unsupported
+    const max = 1600;
+    let { width, height } = bitmap;
+    if (width > max || height > max) {
+      const r = Math.min(max / width, max / height);
+      width = Math.round(width * r);
+      height = Math.round(height * r);
+    }
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return file;
+    ctx.drawImage(bitmap, 0, 0, width, height);
+    const blob: Blob | null = await new Promise((res) =>
+      canvas.toBlob(res, "image/jpeg", 0.82),
+    );
+    if (!blob) return file;
+    const base = file.name.replace(/\.[^.]+$/, "");
+    return new File([blob], base + ".jpg", { type: "image/jpeg" });
+  } catch {
+    return file; // HEIC/unsupported → submit original; server returns a friendly error
+  }
+}
 
 export function ProductForm({
   action,
@@ -11,14 +43,32 @@ export function ProductForm({
   product,
   submitLabel = "Guardar",
 }: {
-  action: (formData: FormData) => void;
+  action: (prevState: FormState, formData: FormData) => Promise<FormState>;
   categories: Cat[];
   product?: Product | null;
   submitLabel?: string;
 }) {
+  const [state, formAction, pending] = useActionState(action, null);
+
+  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const fd = new FormData(form);
+    startTransition(async () => {
+      const file = fd.get("image");
+      if (file instanceof File && file.size > 0) {
+        const compressed = await compressImage(file);
+        fd.set("image", compressed, compressed.name);
+      } else {
+        fd.delete("image"); // no new photo
+      }
+      formAction(fd);
+    });
+  }
+
   return (
     <div className="max-w-2xl rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-      <form action={action} className="flex flex-col gap-4">
+      <form onSubmit={onSubmit} className="flex flex-col gap-4">
         <div>
           <label htmlFor="name" className="mb-1.5 block text-sm font-medium text-slate-700">
             Nombre
@@ -157,7 +207,10 @@ export function ProductForm({
             <img src={product.photos[0]} alt="" className="mb-2 h-32 w-32 rounded border object-cover" />
           )}
           <input id="image" name="image" type="file" accept="image/*" className={inputCls} />
-          <p className="mt-1 text-xs text-slate-400">Foto del producto (opcional, máx ~6 MB).</p>
+          <p className="mt-1 text-xs text-slate-400">
+            Cualquier foto (se optimiza automáticamente). Para fotos de iPhone, usa formato JPG si
+            marca error.
+          </p>
         </div>
 
         <div>
@@ -175,11 +228,16 @@ export function ProductForm({
           </select>
         </div>
 
+        {state?.error && (
+          <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{state.error}</p>
+        )}
+
         <button
           type="submit"
-          className="mt-2 rounded-lg bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-800"
+          disabled={pending}
+          className="mt-2 rounded-lg bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-800 disabled:opacity-60"
         >
-          {submitLabel}
+          {pending ? "Guardando…" : submitLabel}
         </button>
       </form>
     </div>

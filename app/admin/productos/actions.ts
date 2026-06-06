@@ -7,6 +7,8 @@ import { requireAdmin } from "@/lib/auth";
 import { slugify } from "@/lib/slug";
 import { resolverFotos } from "@/lib/storage";
 
+export type FormState = { error?: string } | null;
+
 function leerCampos(formData: FormData) {
   const name = String(formData.get("name") ?? "").trim();
   const sku = String(formData.get("sku") ?? "").trim();
@@ -44,22 +46,34 @@ function leerCampos(formData: FormData) {
   };
 }
 
-export async function crearProducto(formData: FormData) {
-  await requireAdmin();
-  const data = leerCampos(formData);
-  const photos = await resolverFotos(formData, []);
-  await prisma.product.create({ data: { ...data, photos } });
-  revalidatePath("/admin/productos");
+export async function crearProducto(_prev: FormState, formData: FormData): Promise<FormState> {
+  try {
+    await requireAdmin();
+    const data = leerCampos(formData);
+    const photos = await resolverFotos(formData, []);
+    await prisma.product.create({ data: { ...data, photos } });
+    revalidatePath("/admin/productos");
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : "Error al guardar" };
+  }
   redirect("/admin/productos");
 }
 
-export async function actualizarProducto(id: string, formData: FormData) {
-  await requireAdmin();
-  const data = leerCampos(formData);
-  const existing = await prisma.product.findUnique({ where: { id }, select: { photos: true } });
-  const photos = await resolverFotos(formData, existing?.photos ?? []);
-  await prisma.product.update({ where: { id }, data: { ...data, photos } });
-  revalidatePath("/admin/productos");
+export async function actualizarProducto(
+  id: string,
+  _prev: FormState,
+  formData: FormData,
+): Promise<FormState> {
+  try {
+    await requireAdmin();
+    const data = leerCampos(formData);
+    const existing = await prisma.product.findUnique({ where: { id }, select: { photos: true } });
+    const photos = await resolverFotos(formData, existing?.photos ?? []);
+    await prisma.product.update({ where: { id }, data: { ...data, photos } });
+    revalidatePath("/admin/productos");
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : "Error al guardar" };
+  }
   redirect("/admin/productos");
 }
 
