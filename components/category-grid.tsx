@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Refrigerator, WashingMachine, Flame, Wind, Zap, Package, type LucideIcon } from "lucide-react";
+import { Refrigerator, WashingMachine, Flame, Wind, Zap, Plug, Droplet, Wrench, Package, type LucideIcon } from "lucide-react";
 
 const ICONS: Record<string, LucideIcon> = {
   refrigeracion: Refrigerator,
@@ -7,6 +7,9 @@ const ICONS: Record<string, LucideIcon> = {
   coccion: Flame,
   climas: Wind,
   "pequenos-electrodomesticos": Zap,
+  "electrico-electronica": Plug,
+  "bombas-de-agua": Droplet,
+  "accesorios-y-otros": Wrench,
 };
 
 type Cat = { id: string; name: string; slug: string };
