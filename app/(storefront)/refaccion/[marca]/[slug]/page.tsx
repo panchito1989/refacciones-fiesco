@@ -134,7 +134,7 @@ export default async function ProductPage({
         />
       )}
       <h1 className="text-2xl font-bold">{product.name}</h1>
-      <p className="text-gray-600">
+      <p className="text-slate-600">
         {product.brand} · Núm. de parte {product.partNumber}
       </p>
       <p className="mt-4 text-3xl font-semibold">{formatMXN(product.priceCents)}</p>

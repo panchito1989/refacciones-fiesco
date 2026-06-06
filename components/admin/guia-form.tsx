@@ -1,6 +1,9 @@
 import type { Guia } from "@prisma/client";
 import { pasosToText, faqsToText, type Paso, type Faq } from "@/lib/guias";
 
+const inputCls =
+  "w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30";
+
 export function GuiaForm({
   action,
   guia,
@@ -10,23 +13,100 @@ export function GuiaForm({
   guia?: Guia | null;
   submitLabel?: string;
 }) {
-  const input = "rounded border border-slate-300 p-2";
   const pasosTxt = guia ? pasosToText((guia.pasos as unknown as Paso[]) ?? []) : "";
   const faqsTxt = guia ? faqsToText((guia.faqs as unknown as Faq[]) ?? []) : "";
   return (
-    <form action={action} className="flex max-w-2xl flex-col gap-3">
-      <input name="titulo" placeholder="Título" className={input} required defaultValue={guia?.titulo ?? ""} />
-      <input name="resumen" placeholder="Resumen (1 línea)" className={input} required defaultValue={guia?.resumen ?? ""} />
-      <textarea name="intro" placeholder="Introducción" className={input} rows={3} required defaultValue={guia?.intro ?? ""} />
-      <label className="text-sm text-slate-500">Pasos (uno por línea, formato: Título | Descripción)</label>
-      <textarea name="pasos" className={input} rows={6} defaultValue={pasosTxt} />
-      <label className="text-sm text-slate-500">FAQs (una por línea, formato: Pregunta | Respuesta)</label>
-      <textarea name="faqs" className={input} rows={4} defaultValue={faqsTxt} />
-      <select name="status" className={input} defaultValue={guia?.status ?? "BORRADOR"}>
-        <option value="BORRADOR">Borrador</option>
-        <option value="PUBLICADO">Publicado</option>
-      </select>
-      <button type="submit" className="rounded bg-black p-2 text-white">{submitLabel}</button>
-    </form>
+    <div className="max-w-2xl rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <form action={action} className="flex flex-col gap-4">
+        <div>
+          <label htmlFor="titulo" className="mb-1.5 block text-sm font-medium text-slate-700">
+            Título
+          </label>
+          <input
+            id="titulo"
+            name="titulo"
+            className={inputCls}
+            required
+            defaultValue={guia?.titulo ?? ""}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="resumen" className="mb-1.5 block text-sm font-medium text-slate-700">
+            Resumen
+          </label>
+          <input
+            id="resumen"
+            name="resumen"
+            placeholder="1 línea"
+            className={inputCls}
+            required
+            defaultValue={guia?.resumen ?? ""}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="intro" className="mb-1.5 block text-sm font-medium text-slate-700">
+            Introducción
+          </label>
+          <textarea
+            id="intro"
+            name="intro"
+            className={inputCls}
+            rows={3}
+            required
+            defaultValue={guia?.intro ?? ""}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="pasos" className="mb-1.5 block text-sm font-medium text-slate-700">
+            Pasos <span className="font-normal text-slate-400">(uno por línea: Título | Descripción)</span>
+          </label>
+          <textarea
+            id="pasos"
+            name="pasos"
+            className={inputCls}
+            rows={6}
+            defaultValue={pasosTxt}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="faqs" className="mb-1.5 block text-sm font-medium text-slate-700">
+            FAQs <span className="font-normal text-slate-400">(una por línea: Pregunta | Respuesta)</span>
+          </label>
+          <textarea
+            id="faqs"
+            name="faqs"
+            className={inputCls}
+            rows={4}
+            defaultValue={faqsTxt}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="guia-status" className="mb-1.5 block text-sm font-medium text-slate-700">
+            Estado
+          </label>
+          <select
+            id="guia-status"
+            name="status"
+            className={inputCls}
+            defaultValue={guia?.status ?? "BORRADOR"}
+          >
+            <option value="BORRADOR">Borrador</option>
+            <option value="PUBLICADO">Publicado</option>
+          </select>
+        </div>
+
+        <button
+          type="submit"
+          className="mt-2 rounded-lg bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-800"
+        >
+          {submitLabel}
+        </button>
+      </form>
+    </div>
   );
 }

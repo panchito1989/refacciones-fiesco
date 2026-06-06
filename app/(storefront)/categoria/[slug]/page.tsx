@@ -80,7 +80,7 @@ export default async function CategoriaPage({ params }: { params: Params }) {
       />
       <h1 className="mb-4 text-2xl font-bold">Refacciones de {category.name}</h1>
       {products.length === 0 ? (
-        <p className="text-gray-600">Aún no hay productos en esta categoría.</p>
+        <p className="text-slate-600">Aún no hay productos en esta categoría.</p>
       ) : (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {products.map((p) => (

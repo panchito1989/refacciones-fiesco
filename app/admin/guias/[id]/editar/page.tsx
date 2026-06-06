@@ -9,7 +9,7 @@ export default async function EditarGuiaPage({ params }: { params: Promise<{ id:
   if (!guia) notFound();
   return (
     <div>
-      <h1 className="mb-4 text-xl font-semibold">Editar guía</h1>
+      <h1 className="mb-4 text-2xl font-bold text-slate-900">Editar guía</h1>
       <GuiaForm action={actualizarGuia.bind(null, guia.id)} guia={guia} submitLabel="Guardar cambios" />
     </div>
   );

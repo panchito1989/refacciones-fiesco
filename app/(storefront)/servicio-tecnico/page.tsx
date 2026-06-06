@@ -11,12 +11,12 @@ export const metadata: Metadata = {
 
 type SearchParams = Promise<{ ok?: string; sku?: string; producto?: string }>;
 
+const inputCls = "w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30";
+
 export default async function ServicioTecnicoPage({ searchParams }: { searchParams: SearchParams }) {
   const { ok, sku, producto } = await searchParams;
   const tecnicos = await prisma.tecnico.findMany({ where: { activo: true } });
   const ciudades = [...new Set(tecnicos.flatMap((t) => t.ciudades))].sort();
-
-  const input = "rounded-md border border-slate-300 p-2";
 
   return (
     <div className="mx-auto max-w-3xl p-6">
@@ -49,20 +49,36 @@ export default async function ServicioTecnicoPage({ searchParams }: { searchPara
           ¡Solicitud recibida! Te contactaremos pronto para agendar tu servicio.
         </div>
       ) : (
-        <form action={crearSolicitud} className="mt-8 flex flex-col gap-3">
+        <form action={crearSolicitud} className="mt-8 flex flex-col gap-4">
           <h2 className="text-xl font-semibold">Solicita tu instalación</h2>
-          <input name="nombre" placeholder="Nombre completo" className={input} required />
-          <input name="telefono" placeholder="Teléfono / WhatsApp" className={input} required />
-          <input name="ciudad" placeholder="Ciudad" className={input} required />
-          <input name="direccion" placeholder="Dirección" className={input} required />
-          <textarea
-            name="descripcion"
-            placeholder="¿Qué necesitas instalar o reparar?"
-            className={input}
-            rows={3}
-            required
-            defaultValue={producto ? `Instalación de: ${producto}` : ""}
-          />
+          <div>
+            <label htmlFor="nombre" className="mb-1 block text-sm font-medium text-slate-700">Nombre completo</label>
+            <input id="nombre" name="nombre" placeholder="Nombre completo" className={inputCls} required />
+          </div>
+          <div>
+            <label htmlFor="telefono" className="mb-1 block text-sm font-medium text-slate-700">Teléfono / WhatsApp</label>
+            <input id="telefono" name="telefono" placeholder="Teléfono / WhatsApp" className={inputCls} required />
+          </div>
+          <div>
+            <label htmlFor="ciudad" className="mb-1 block text-sm font-medium text-slate-700">Ciudad</label>
+            <input id="ciudad" name="ciudad" placeholder="Ciudad" className={inputCls} required />
+          </div>
+          <div>
+            <label htmlFor="direccion" className="mb-1 block text-sm font-medium text-slate-700">Dirección</label>
+            <input id="direccion" name="direccion" placeholder="Dirección" className={inputCls} required />
+          </div>
+          <div>
+            <label htmlFor="descripcion" className="mb-1 block text-sm font-medium text-slate-700">¿Qué necesitas instalar o reparar?</label>
+            <textarea
+              id="descripcion"
+              name="descripcion"
+              placeholder="¿Qué necesitas instalar o reparar?"
+              className={inputCls}
+              rows={3}
+              required
+              defaultValue={producto ? `Instalación de: ${producto}` : ""}
+            />
+          </div>
           <input type="hidden" name="productoSku" defaultValue={sku ?? ""} />
           <button type="submit" className="mt-1 rounded-md bg-amber-500 px-6 py-3 font-semibold text-slate-900 hover:bg-amber-600">
             Enviar solicitud

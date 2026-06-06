@@ -15,7 +15,7 @@ export default async function EditarProductoPage({ params }: { params: Promise<{
 
   return (
     <div>
-      <h1 className="mb-4 text-xl font-semibold">Editar producto</h1>
+      <h1 className="mb-4 text-2xl font-bold text-slate-900">Editar producto</h1>
       <ProductForm action={action} categories={categories} product={product} submitLabel="Guardar cambios" />
     </div>
   );

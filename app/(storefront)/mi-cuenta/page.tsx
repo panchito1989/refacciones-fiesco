@@ -19,7 +19,7 @@ export default async function MiCuentaPage() {
 
       {preferente ? (
         <div className="mt-4 rounded-lg border border-amber-300 bg-amber-50 p-4">
-          <p className="font-semibold text-amber-800">⭐ Eres Cliente Preferente</p>
+          <p className="font-semibold text-amber-800"><span aria-hidden="true">⭐</span> Eres Cliente Preferente</p>
           <ul className="mt-2 list-disc pl-5 text-sm text-amber-900">
             <li>5% de descuento automático en todas tus compras.</li>
             <li>Acceso a capacitaciones para revendedores y técnicos.</li>

@@ -21,7 +21,7 @@ export default async function AdminPedidoDetallePage({ params }: { params: Promi
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-xl font-semibold">Pedido #{order.id.slice(-6).toUpperCase()}</h1>
+      <h1 className="text-2xl font-bold text-slate-900">Pedido #{order.id.slice(-6).toUpperCase()}</h1>
       <p className="mt-1 text-sm text-slate-500">{order.customer.email} · {order.paymentMethod}</p>
 
       <ul className="mt-4 divide-y divide-slate-200 text-sm">
@@ -41,7 +41,7 @@ export default async function AdminPedidoDetallePage({ params }: { params: Promi
         <div className="flex justify-between font-bold"><span>Total</span><span>{formatMXN(order.totalCents)}</span></div>
       </div>
 
-      <div className="mt-4 rounded border border-slate-200 p-3 text-sm">
+      <div className="mt-4 rounded-xl border border-slate-200 bg-white p-6 shadow-sm text-sm">
         <p className="font-semibold">Envío</p>
         <p>{order.shipName} · {order.shipPhone}</p>
         <p>{order.shipStreet}, {order.shipCity}, {order.shipState}, CP {order.shipZip}</p>
@@ -49,12 +49,12 @@ export default async function AdminPedidoDetallePage({ params }: { params: Promi
 
       <form action={action} className="mt-6 flex items-center gap-2">
         <label className="text-sm font-medium">Estado:</label>
-        <select name="status" defaultValue={order.status} className="rounded border border-slate-300 p-2 text-sm">
+        <select name="status" defaultValue={order.status} className="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30">
           {ESTADOS.map((e) => (
             <option key={e} value={e}>{STATUS_LABEL[e]}</option>
           ))}
         </select>
-        <button className="rounded bg-blue-700 px-4 py-2 text-sm text-white hover:bg-blue-800">Actualizar</button>
+        <button className="rounded-lg bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-800">Actualizar</button>
       </form>
     </div>
   );

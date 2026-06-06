@@ -39,7 +39,7 @@ export default async function BuscarPage({
         {query ? `Resultados para "${query}"` : "Escribe algo para buscar"}
       </h1>
       {query && products.length === 0 && (
-        <p className="text-gray-600">
+        <p className="text-slate-600">
           No encontramos "{query}". Pero no te preocupes:{" "}
           <a href={`/conseguir?q=${encodeURIComponent(query)}`} className="font-semibold text-blue-700 underline">
             te lo conseguimos

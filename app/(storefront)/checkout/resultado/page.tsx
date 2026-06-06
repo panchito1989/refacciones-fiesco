@@ -32,7 +32,7 @@ export default async function ResultadoPage({ searchParams }: { searchParams: SP
     <div className="mx-auto max-w-xl p-6 text-center">
       {aprobado ? (
         <div className="rounded-lg border border-green-200 bg-green-50 p-6 text-green-800">
-          <h1 className="text-2xl font-bold">¡Pago aprobado! 🎉</h1>
+          <h1 className="text-2xl font-bold">¡Pago aprobado! <span aria-hidden="true">🎉</span></h1>
           <p className="mt-2">Tu pedido fue pagado y está en proceso.</p>
         </div>
       ) : (

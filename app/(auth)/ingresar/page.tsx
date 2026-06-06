@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createBrowserClient } from "@supabase/ssr";
 
+const inputCls = "w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30";
+
 export default function IngresarPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -27,9 +29,15 @@ export default function IngresarPage() {
   return (
     <div className="mx-auto mt-16 max-w-sm p-6">
       <h1 className="mb-4 text-xl font-semibold">Iniciar sesión</h1>
-      <form onSubmit={onSubmit} className="flex flex-col gap-3">
-        <input className="rounded border border-slate-300 p-2" type="email" placeholder="Correo" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        <input className="rounded border border-slate-300 p-2" type="password" placeholder="Contraseña" value={password} onChange={(e) => setPassword(e.target.value)} required />
+      <form onSubmit={onSubmit} className="flex flex-col gap-4">
+        <div>
+          <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-slate-700">Correo electrónico</label>
+          <input id="email" className={inputCls} type="email" placeholder="Correo" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        </div>
+        <div>
+          <label htmlFor="password" className="mb-1.5 block text-sm font-medium text-slate-700">Contraseña</label>
+          <input id="password" className={inputCls} type="password" placeholder="Contraseña" value={password} onChange={(e) => setPassword(e.target.value)} required />
+        </div>
         {error && <p className="text-sm text-red-600">{error}</p>}
         <button type="submit" className="rounded-md bg-blue-700 p-2 text-white hover:bg-blue-800">Entrar</button>
       </form>
