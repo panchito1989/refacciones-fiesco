@@ -17,10 +17,13 @@ const escape = (o: unknown) =>
 type Params = { marca: string; slug: string };
 
 async function getProduct(marca: string, slug: string) {
-  // slug = "<numero-parte-slug>-<nombre-slug>"; el partNumber slug es el prefijo
+  // slug = "<numero-parte-slug>-<nombre-slug>"; el partNumber slug es el prefijo.
+  // We can't do a single findUnique because the URL-slug is computed from partNumber.
+  // Bound the scan to 300 rows and select only the columns we need.
   const products = await prisma.product.findMany({
     where: { brandSlug: marca, status: "PUBLICADO" },
     include: { category: true },
+    take: 300,
   });
   return (
     products.find((p) => slug === `${slugify(p.partNumber)}-${p.slug}`) ?? null

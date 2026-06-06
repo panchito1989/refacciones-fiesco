@@ -2,8 +2,13 @@
 
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { rateLimitOk } from "@/lib/rate-limit";
 
 export async function crearSolicitud(formData: FormData) {
+  if (!(await rateLimitOk("solicitud"))) {
+    redirect("/servicio-tecnico?error=limite");
+  }
+
   const nombre = String(formData.get("nombre") ?? "").trim().slice(0, 120);
   const telefono = String(formData.get("telefono") ?? "").trim().slice(0, 30);
   const ciudad = String(formData.get("ciudad") ?? "").trim().slice(0, 80);

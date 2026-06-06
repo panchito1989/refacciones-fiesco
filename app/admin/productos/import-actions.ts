@@ -55,6 +55,25 @@ export async function importarProductos(
     truncated = true;
   }
 
+  // --- Batch pre-loads to avoid N+1 queries ---
+  // 1. Load all categories once into a slug→id map
+  const allCategories = await prisma.category.findMany({ select: { slug: true, id: true } });
+  const categoryMap = new Map<string, string>(allCategories.map((c) => [c.slug, c.id]));
+
+  // 2. Collect all SKUs from valid rows, then load existing ones in one query
+  const allSkus = rows
+    .map((r) => (r.sku ?? "").trim())
+    .filter((s) => s.length > 0);
+  const existingSkuSet = new Set(
+    (
+      await prisma.product.findMany({
+        where: { sku: { in: allSkus } },
+        select: { sku: true },
+      })
+    ).map((p) => p.sku)
+  );
+  // --- end batch pre-loads ---
+
   let creados = 0;
   let actualizados = 0;
   const errores: string[] = [];
@@ -109,30 +128,23 @@ export async function importarProductos(
 
     const description = (row.descripcion ?? "").trim() || undefined;
 
-    // Resolve category by slug (soft warning — don't abort if not found)
+    // Resolve category by slug using the pre-loaded map (no per-row DB query)
     let categoryId: string | null = null;
     const categoriaSlug = (row.categoria ?? "").trim();
     if (categoriaSlug) {
-      try {
-        const cat = await prisma.category.findUnique({ where: { slug: categoriaSlug } });
-        if (cat) {
-          categoryId = cat.id;
-        } else {
-          errores.push(
-            `Fila ${rowNum} (SKU ${sku}): categoría "${categoriaSlug}" no encontrada — se importa sin categoría.`
-          );
-        }
-      } catch {
-        // Non-fatal: still import the product without a category
+      const catId = categoryMap.get(categoriaSlug);
+      if (catId) {
+        categoryId = catId;
+      } else {
         errores.push(
-          `Fila ${rowNum} (SKU ${sku}): error buscando categoría "${categoriaSlug}" — se importa sin categoría.`
+          `Fila ${rowNum} (SKU ${sku}): categoría "${categoriaSlug}" no encontrada — se importa sin categoría.`
         );
       }
     }
 
     try {
-      // Determine created vs updated BEFORE the upsert
-      const existing = await prisma.product.findUnique({ where: { sku }, select: { id: true } });
+      // Determine created vs updated using the pre-loaded set (no per-row DB query)
+      const existsAlready = existingSkuSet.has(sku);
 
       await prisma.product.upsert({
         where: { sku },
@@ -168,7 +180,7 @@ export async function importarProductos(
         },
       });
 
-      if (existing) {
+      if (existsAlready) {
         actualizados++;
       } else {
         creados++;

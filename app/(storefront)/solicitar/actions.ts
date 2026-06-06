@@ -2,10 +2,16 @@
 
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { rateLimitOk } from "@/lib/rate-limit";
 
 export async function crearLead(formData: FormData) {
   const tipo =
     String(formData.get("tipo") ?? "CONSEGUIR") === "IGUALAR_PRECIO" ? "IGUALAR_PRECIO" : "CONSEGUIR";
+
+  if (!(await rateLimitOk("lead"))) {
+    redirect(tipo === "IGUALAR_PRECIO" ? "/igualar-precio?error=limite" : "/conseguir?error=limite");
+  }
+
   const nombre = String(formData.get("nombre") ?? "").trim().slice(0, 120);
   const telefono = String(formData.get("telefono") ?? "").trim().slice(0, 30);
   const emailRaw = String(formData.get("email") ?? "").trim();

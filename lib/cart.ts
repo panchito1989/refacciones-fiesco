@@ -24,6 +24,7 @@ export async function writeCart(lines: CartLine[]): Promise<void> {
     sameSite: "lax",
     path: "/",
     maxAge: 60 * 60 * 24 * 30,
+    secure: process.env.NODE_ENV === "production",
   });
 }
 

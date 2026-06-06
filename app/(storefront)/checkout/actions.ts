@@ -7,6 +7,7 @@ import { writeCart } from "@/lib/cart";
 import { resolveCart } from "@/lib/orders";
 import { getClienteEstado, descuentoPreferente } from "@/lib/preferente";
 import { mpConfigurado, crearPreferenciaMP } from "@/lib/mercadopago";
+import { rateLimitOk } from "@/lib/rate-limit";
 
 export async function crearPedido(formData: FormData) {
   const profile = await getProfile();
@@ -14,6 +15,10 @@ export async function crearPedido(formData: FormData) {
 
   const { lines, subtotalCents, shippingCents } = await resolveCart();
   if (lines.length === 0) redirect("/carrito");
+
+  if (!(await rateLimitOk("checkout"))) {
+    redirect("/carrito?error=limite");
+  }
 
   const { preferente } = await getClienteEstado(profile.id);
   const discountCents = preferente ? descuentoPreferente(subtotalCents) : 0;
@@ -70,12 +75,19 @@ export async function crearPedido(formData: FormData) {
   await writeCart([]);
 
   if (paymentMethod === "TARJETA" && mpConfigurado) {
-    const initPoint = await crearPreferenciaMP({
-      orderId: order.id,
-      totalCents,
-      siteUrl: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
-    });
-    redirect(initPoint);
+    let initPoint: string | null = null;
+    try {
+      initPoint = await crearPreferenciaMP({
+        orderId: order.id,
+        totalCents,
+        siteUrl: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+      });
+    } catch (err) {
+      console.error("[checkout] crearPreferenciaMP falló:", err);
+    }
+    if (initPoint) redirect(initPoint);
+    // MP failed: fall through to order page
+    redirect(`/pedido/${order.id}`);
   }
 
   redirect(`/pedido/${order.id}`);
