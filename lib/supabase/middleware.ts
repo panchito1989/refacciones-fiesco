@@ -2,7 +2,10 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
 export async function updateSession(request: NextRequest) {
-  // Forward the pathname so Server Components (layouts) can read it via headers()
+  // Forward the pathname so Server Components (layouts) can read it via headers().
+  // SECURITY: always derived from request.nextUrl.pathname (Next.js-parsed, server-trusted).
+  // Using .set() unconditionally overwrites any client-supplied x-pathname header,
+  // so callers can never inject a spoofed pathname.
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set("x-pathname", request.nextUrl.pathname);
 
